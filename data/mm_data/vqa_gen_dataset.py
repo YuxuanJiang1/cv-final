@@ -44,8 +44,12 @@ def collate(samples, pad_idx, eos_idx):
     src_tokens = merge("source")
     src_lengths = torch.LongTensor([s["source"].ne(pad_idx).long().sum() for s in samples])
 
+    images = np.array([sample['image'] for sample in samples])
+
     patch_images = torch.stack([sample['patch_image'] for sample in samples], dim=0)
     patch_masks = torch.cat([sample['patch_mask'] for sample in samples])
+
+    questions = np.array([sample['question'] for sample in samples])
 
     conf = None
     if samples[0].get("conf", None) is not None:
@@ -86,6 +90,8 @@ def collate(samples, pad_idx, eos_idx):
         "id": id,
         "nsentences": len(samples),
         "ntokens": ntokens,
+        "images": images,
+        "questions": questions,
         "net_input": {
             "src_tokens": src_tokens,
             "src_lengths": src_lengths,
@@ -152,6 +158,7 @@ class VqaGenDataset(OFADataset):
         else:
             uniq_id, image, question, ref, predict_objects, caption = item
 
+        image_bstr = image
         image = Image.open(BytesIO(base64.urlsafe_b64decode(image)))
         patch_image = self.patch_resize_transform(image)
         patch_mask = torch.tensor([True])
@@ -189,7 +196,9 @@ class VqaGenDataset(OFADataset):
 
         example = {
             "id": uniq_id,
+            "question": question,
             "source": src_item,
+            "image": image_bstr,
             "patch_image": patch_image,
             "patch_mask": patch_mask,
             "target": target_item,
