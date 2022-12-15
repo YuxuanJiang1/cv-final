@@ -35,6 +35,32 @@ def apply_half(t):
     return t
 
 
+def get_class_label_of_ref(ref):
+    if ref in ["yes", "no"]:
+        return "yes/no"
+    try:
+        n = int(ref)
+        return "number"
+    except ValueError:
+        pass
+    return "other"
+
+
+def get_class_label_by_ref_dict(ref_dict):
+    class_label = None
+    for ref in ref_dict:
+        class_label_of_ref = get_class_label_of_ref(ref)
+        if class_label is None:
+            class_label = class_label_of_ref
+        elif class_label != class_label_of_ref:
+            return "other"
+    return class_label
+
+
+def get_class_labels(sample):
+    return list(map(get_class_label_by_ref_dict, sample['ref_dict']))
+
+
 def main(cfg: DictConfig, **kwargs):
     utils.import_user_module(cfg.common)
 
@@ -124,11 +150,12 @@ def main(cfg: DictConfig, **kwargs):
     generator = task.build_generator(models, cfg.generation)
 
     results = []
-    score_sum = torch.FloatTensor([0]).cuda()
-    score_cnt = torch.FloatTensor([0]).cuda()
     for sample in progress:
         if "net_input" not in sample:
             continue
+        images = sample['images']
+        del sample['images']
+        class_labels = get_class_labels(sample)
         sample = utils.move_to_cuda(sample) if use_cuda else sample
         sample = utils.apply_to_sample(apply_half, sample) if cfg.common.fp16 else sample
         with torch.no_grad():
@@ -136,12 +163,16 @@ def main(cfg: DictConfig, **kwargs):
                 result, scores = zero_shot_step(task, generator, models, sample)
             else:
                 result, scores = eval_step(task, generator, models, sample, **kwargs)
+        for result_, score, class_label, image, question, ref_dict in zip(result, scores, class_labels, images, sample['questions'], sample['ref_dict']):
+            result_['score'] = score
+            result_['class_label'] = class_label
+            result_['image'] = image
+            result_['question'] = question
+            result_['ref_dict'] = ref_dict
         results += result
-        score_sum += sum(scores) if scores is not None else 0
-        score_cnt += len(scores) if scores is not None else 0
         progress.log({"sentences": sample["nsentences"]})
 
-    merge_results(task, cfg, logger, score_cnt, score_sum, results)
+    merge_results(task, cfg, logger, results)
 
 
 def cli_main():
