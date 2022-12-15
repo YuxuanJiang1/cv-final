@@ -18,13 +18,8 @@ pip install -r requirements.txt
 ```
 <br></br>
 
-# Datasets and Checkpoints
-See [datasets.md](datasets.md) and [checkpoints.md](checkpoints.md).
-<br></br>
 
-
-
-## Visual Question Answering
+## Evaluate on Visual Question Answering
 Here we provide the finetuning and inference codes to reproduce the VQAv2 result reported in our paper (**test-std 80.02**). We believe much improvement on accuracy can still be achieved based on this codebase :)
 <details>
     <summary><b>1. Prepare the Dataset & Checkpoints</b></summary>
