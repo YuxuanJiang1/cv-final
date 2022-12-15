@@ -16,7 +16,10 @@ path=../../checkpoints/vqa_large_best.pt
 result_path=../../results/vqa_${split}_beam
 selected_cols=0,5,2,3,4
 
-CUDA_VISIBLE_DEVICES=0,1,2,3 python3 -m torch.distributed.launch --nproc_per_node=4 --master_port=${MASTER_PORT} ../../evaluate.py \
+export PYTHONPATH=/home/ww2135/OFA/fairseq:$PYTHONPATH
+
+#CUDA_VISIBLE_DEVICES=0,1,2,3 python3 -m torch.distributed.launch --nproc_per_node=4 --master_port=${MASTER_PORT} ../../evaluate.py \
+CUDA_VISIBLE_DEVICES=0 python3 ../../evaluate.py \
     ${data} \
     --path=${path} \
     --user-dir=${user_dir} \
