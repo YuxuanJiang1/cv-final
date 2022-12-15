@@ -20,7 +20,7 @@ pip install -r requirements.txt
 
 
 ## Evaluate on Visual Question Answering
-Data are released [here] (https://ood.hpc.nyu.edu/pun/sys/files/fs/home/ww2135/OFA/)
+Data are released [here](https://ood.hpc.nyu.edu/pun/sys/files/fs/home/ww2135/OFA/)
 
 Here we provide the finetuning and inference codes to reproduce the VQAv2 result reported in our paper (**test-std 80.02**). We believe much improvement on accuracy can still be achieved based on this codebase :)
 <details>
