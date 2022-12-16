@@ -23,9 +23,7 @@ pip install -r requirements.txt
 Data are released [here](https://ood.hpc.nyu.edu/pun/sys/files/fs/home/ww2135/OFA/)
 
 To run the evaluate code of inference:
-    <p>
-        <i>(Update on validation time-cost)</i> As will be mentioned in the <i>4. Inference</i> section, we prepare 2 types of inference: beam-search and all-candidate inference. By default, all-candidate inference is used for validation during fine-tuning, which achieves better accuracy but costs much time. Now we have added a new option in the training scripts called <code>--val-inference-type</code> to switch the validation inference type during fine-tuning. If you feel the validation takes too long, you can refer to <a href="https://github.com/OFA-Sys/OFA/pull/79">PR #79</a> to activate beam-search validation, which significantly takes much less time, with around 0.5-0.6 validation score degradation compared with all-candidate validation.
-    </p>
+   
 </details>
 <details>
     <summary><b>4. Inference</b></summary>
