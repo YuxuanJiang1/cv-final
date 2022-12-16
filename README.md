@@ -26,16 +26,16 @@ To run the evaluate code of inference:
    
 
  
-    <p>
-        To get a fast but not that accuracy:
-    </p>
+
+ To get a fast but not that accuracy:
+
 <pre>
 cd run_scripts/vqa
 bash evaluate_vqa_beam.sh val # specify 'val' or 'test'
 </pre>
-    <p>
-        For the best evaluation result at the cost of much slower speed:
-    </p>
+
+For the best evaluation result at the cost of much slower speed:
+
 <pre>
 # run on each worker after the distributed configs have been correctly set following the guide in evaluate_vqa_allcand_distributed.sh
 cd run_scripts/vqa
