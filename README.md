@@ -24,8 +24,7 @@ Data are released [here](https://ood.hpc.nyu.edu/pun/sys/files/fs/home/ww2135/OF
 
 To run the evaluate code of inference:
    
-</details>
-<details>
+
  
     <p>
         To get a fast but not that accuracy:
@@ -42,6 +41,6 @@ bash evaluate_vqa_beam.sh val # specify 'val' or 'test'
 cd run_scripts/vqa
 bash evaluate_vqa_allcand_distributed.sh val # specify 'val' or 'test'
 </pre>
-</details>
+
 
 <br></br>
