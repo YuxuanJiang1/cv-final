@@ -26,7 +26,7 @@ To run the evaluate code of inference:
    
 </details>
 <details>
-    <summary><b>4. Inference</b></summary>
+ 
     <p>
         To get a fast but not that accuracy:
     </p>
